@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+<!--    <include file="changelog/scheme.xml" relativeToChangelogFile="true"/>-->
+
+    <changeSet id="1" author="john">
+        <createTable tableName="dictionary_values">
+            <column name="dictionary_value_id" type="uuid" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(64)"/>
+        </createTable>
+
+        <createTable tableName="documents">
+            <column name="document_id" type="uuid" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="date"/>
+        </createTable>
+
+        <createTable tableName="tests">
+            <column name="id" type="uuid" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(64)"/>
+            <column name="dictionary_value_id" type="uuid"/>
+            <column name="document_id" type="uuid"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tests" baseColumnNames="dictionary_value_id"
+                                 constraintName="fk_tests_dictionary_value"
+                                 referencedTableName="dictionary_values"
+                                 referencedColumnNames="dictionary_value_id"/>
+        <addForeignKeyConstraint baseTableName="tests" baseColumnNames="document_id" constraintName="fk_test_documents"
+                                 referencedTableName="documents"
+                                 referencedColumnNames="document_id"/>
+    </changeSet>
+
+</databaseChangeLog>
